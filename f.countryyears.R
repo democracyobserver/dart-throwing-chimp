@@ -5,7 +5,7 @@
 # ISO3c, use the 'countrycode' package. I tested it on a Windows 10 machine running R version 3.2.2., and I was told that
 # it worked on Mac's OS X, too.
 
-f.countryyears <- function(start = 1800, end = as.numeric(substr(Sys.Date(), 1, 4)) - 1) {
+f.countryyears <- function(start = 1800, end = as.numeric(substr(Sys.Date(), 1, 4)) - 1, scores = FALSE) { # added to turn score harvest off
 
   # Package dependencies
 
@@ -30,9 +30,15 @@ f.countryyears <- function(start = 1800, end = as.numeric(substr(Sys.Date(), 1, 
 
   # Reduce the resulting data frame to id variables and selected years
 
-  CY <- Polity %>%
-    select(country, ccode, pitfcode = scode, year) %>%  # Change name of scode to pitfcode so it's clearer what it is
+  if(scores == TRUE) {
+    CY <- Polity %>%
+      select(country, cown = ccode, pitfcode = scode, year, polity, polity2) %>%  # added to toggle score harvesting
+      filter(year >= start & year <= end)
+    } else {
+    CY <- Polity %>%
+    select(country, cown = ccode, pitfcode = scode, year) %>%  # Change name of scode to pitfcode so it's clearer what it is
     filter(year >= start & year <= end)
+    }
 
   # Correct several pitfcodes to match PITF standard
 
@@ -45,7 +51,7 @@ f.countryyears <- function(start = 1800, end = as.numeric(substr(Sys.Date(), 1, 
 
   # Return the results
 
-  CY <- as.data.frame(CY)
+  # CY <- as.data.frame(CY) # turn this off since I want the tibble format
   return(CY)
 
 }
