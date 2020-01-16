@@ -32,11 +32,11 @@ f.countryyears <- function(start = 1800, end = as.numeric(substr(Sys.Date(), 1, 
 
   if(scores == TRUE) {
     CY <- Polity %>%
-      select(country, cown = ccode, pitfcode = scode, year, polity, polity2) %>%  # added to toggle score harvesting
+      select(country, polity_ccode = ccode, pitfcode = scode, year, polity, polity2) %>%  # added to toggle score harvesting
       filter(year >= start & year <= end)
     } else {
     CY <- Polity %>%
-    select(country, cown = ccode, pitfcode = scode, year) %>%  # Change name of scode to pitfcode so it's clearer what it is
+    select(country, polity_ccode = ccode, pitfcode = scode, year) %>%  # Change name of scode to pitfcode so it's clearer what it is
     filter(year >= start & year <= end)
     }
 
